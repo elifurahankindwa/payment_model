@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Money Payment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .network-icon-container {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .network-icon-container.selected {
+            border-color: #3b82f6; /* blue-500 */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .form-container {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+    <div class="form-container w-full max-w-md p-8 space-y-8 rounded-2xl shadow-2xl">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold tracking-tight text-white">Secure Payment</h1>
+            <p class="mt-2 text-gray-400">Pay with your favorite mobile network.</p>
+        </div>
+
+        <!-- Network Selection -->
+        <div>
+            <label class="text-sm font-medium text-gray-300">Select Network</label>
+            <div id="network-selector" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+                <!-- Airtel -->
+                <div class="network-icon-container p-4 bg-gray-800 rounded-lg cursor-pointer" data-network="Airtel">
+                    <svg class="h-12 w-full" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm-32.2 147.75a8 8 0 0 1-13.6 8.5L25 119.5a8 8 0 0 1 13.6-8.5l25.6 40.52ZM128 176a48 48 0 1 1 48-48a48.05 48.05 0 0 1-48 48Zm87.8-56.5-57.2 90.75a8 8 0 1 1-13.6-8.5l57.2-90.75a8 8 0 1 1 13.6 8.5Z" fill="#e20000"/></svg>
+                    <p class="text-center text-xs mt-2 font-semibold">Airtel Money</p>
+                </div>
+                <!-- Tigo -->
+                <div class="network-icon-container p-4 bg-gray-800 rounded-lg cursor-pointer" data-network="Tigo">
+                    <svg class="h-12 w-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9.5v-4.5H7V10h4v6zm7-1.5c0 .83-.67 1.5-1.5 1.5h-2.5V10H15c.83 0 1.5.67 1.5 1.5v3z" fill="#004f9f"/><path d="M15 11.5h-1.5v3H15v-3z" fill="#004f9f"/></svg>
+                     <p class="text-center text-xs mt-2 font-semibold">Tigo Pesa</p>
+                </div>
+                <!-- Vodacom -->
+                <div class="network-icon-container p-4 bg-gray-800 rounded-lg cursor-pointer" data-network="Vodacom">
+                     <svg class="h-12 w-full" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1.4-6.47c-2.28.46-3.83 2.5-3.54 4.9.29 2.4 2.22 4.16 4.49 4.16s4.2-1.76 4.49-4.16c.29-2.4-1.26-4.44-3.54-4.9l-.45-.09c-.83-.17-1.55-.17-2.38 0l-.11.02z" fill="#e60000"/></svg>
+                     <p class="text-center text-xs mt-2 font-semibold">M-Pesa</p>
+                </div>
+                <!-- Halotel -->
+                <div class="network-icon-container p-4 bg-gray-800 rounded-lg cursor-pointer" data-network="Halotel">
+                    <svg class="h-12 w-full" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm-.33 13.257c-2.43 0-3.486-1.5-3.486-3.257s1.056-3.257 3.486-3.257c1.47 0 2.454.67 2.924 1.25l-1.127.87c-.3-.39-.8-.7-1.797-.7-1.3 0-1.8.8-1.8 1.837s.5 1.837 1.8 1.837c.996 0 1.496-.31 1.797-.7l1.127.87c-.47.58-1.454 1.25-2.924 1.25z" fill="#00a859"/></svg>
+                    <p class="text-center text-xs mt-2 font-semibold">HaloPesa</p>
+                </div>
+            </div>
+            <input type="hidden" id="selected-network" name="network">
+        </div>
+
+        <form id="payment-form" class="space-y-6">
+            <!-- Amount -->
+            <div>
+                <label for="amount" class="text-sm font-medium text-gray-300">Amount (TZS)</label>
+                <div class="mt-2">
+                    <input id="amount" name="amount" type="number" required class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="e.g., 5000">
+                </div>
+            </div>
+            
+            <!-- Phone Number -->
+            <div>
+                <label for="phone" class="text-sm font-medium text-gray-300">Phone Number</label>
+                <div class="mt-2">
+                    <input id="phone" name="phone" type="tel" required class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="e.g., 0712345678">
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit" id="pay-button" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-colors">
+                    <span id="button-text">Pay Now</span>
+                    <div id="loader" class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6 hidden"></div>
+                </button>
+            </div>
+        </form>
+
+        <!-- Status Messages -->
+        <div id="status-container" class="text-center p-4 rounded-lg hidden">
+             <p id="status-message"></p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const networkSelector = document.getElementById('network-selector');
+            const selectedNetworkInput = document.getElementById('selected-network');
+            const paymentForm = document.getElementById('payment-form');
+            const payButton = document.getElementById('pay-button');
+            const buttonText = document.getElementById('button-text');
+            const loader = document.getElementById('loader');
+            const statusContainer = document.getElementById('status-container');
+            const statusMessage = document.getElementById('status-message');
+            
+            let selectedNetwork = null;
+            let pollingInterval = null;
+
+            // --- Event Listeners ---
+
+            // Handle network selection
+            networkSelector.addEventListener('click', (e) => {
+                const container = e.target.closest('.network-icon-container');
+                if (!container) return;
+
+                // Clear previous selection
+                document.querySelectorAll('.network-icon-container').forEach(el => {
+                    el.classList.remove('selected');
+                });
+
+                // Set new selection
+                container.classList.add('selected');
+                selectedNetwork = container.dataset.network;
+                selectedNetworkInput.value = selectedNetwork;
+            });
+
+            // Handle form submission
+            paymentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (pollingInterval) clearInterval(pollingInterval);
+
+                const amount = document.getElementById('amount').value;
+                const phone = document.getElementById('phone').value;
+
+                // --- Validation ---
+                if (!selectedNetwork) {
+                    showStatus('Please select a mobile network.', 'error');
+                    return;
+                }
+                if (!amount || amount <= 0) {
+                    showStatus('Please enter a valid amount.', 'error');
+                    return;
+                }
+                if (!phone || !/^(0[67])\d{8}$/.test(phone)) {
+                    showStatus('Please enter a valid Tanzanian phone number (e.g., 0712345678).', 'error');
+                    return;
+                }
+
+                setLoading(true);
+                showStatus('Initializing transaction...', 'info');
+                
+                try {
+                    // --- Backend API Call ---
+                    // This is where we send the payment details to our Python backend.
+                    const response = await fetch('http://127.0.0.1:5000/api/make-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ amount, phone, network: selectedNetwork })
+                    });
+                    
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'An unknown error occurred.');
+                    }
+                    
+                    // On success, backend returns a tracking ID. Now we start polling for status.
+                    const trackingId = data.order_tracking_id;
+                    showStatus('Request sent! Please check your phone to enter your PIN.', 'success');
+                    pollForStatus(trackingId);
+
+                } catch (error) {
+                    console.error('Payment initiation failed:', error);
+                    showStatus(`Error: ${error.message}`, 'error');
+                    setLoading(false);
+                }
+            });
+
+
+            // --- Helper Functions ---
+            
+            /**
+             * Periodically asks the backend for the transaction status.
+             */
+            function pollForStatus(trackingId) {
+                pollingInterval = setInterval(async () => {
+                    try {
+                        const res = await fetch(`http://127.0.0.1:5000/api/check-status/${trackingId}`);
+                        const data = await res.json();
+
+                        // Update UI based on status from backend
+                        if (data.payment_status === 'Completed') {
+                            showStatus('Payment successful! Thank you.', 'success');
+                            setLoading(false);
+                            clearInterval(pollingInterval);
+                        } else if (data.payment_status === 'Failed') {
+                            showStatus('Payment failed. Please try again.', 'error');
+                            setLoading(false);
+                            clearInterval(pollingInterval);
+                        } else if (data.payment_status === 'Invalid') {
+                            showStatus('Transaction is invalid. Please start over.', 'error');
+                            setLoading(false);
+                            clearInterval(pollingInterval);
+                        }
+                        // If status is still 'Pending', the interval will just run again.
+                        
+                    } catch (error) {
+                        console.error('Polling error:', error);
+                        // We don't show an error here to the user, as it might be a temporary network issue.
+                        // We just let the polling continue. If it fails permanently, the transaction will time out on the server.
+                    }
+                }, 3000); // Poll every 3 seconds
+            }
+
+            /**
+             * Controls the loading state of the payment button.
+             */
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    payButton.disabled = true;
+                    buttonText.classList.add('hidden');
+                    loader.classList.remove('hidden');
+                } else {
+                    payButton.disabled = false;
+                    buttonText.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                }
+            }
+
+            /**
+             * Displays status messages to the user.
+             */
+            function showStatus(message, type = 'info') {
+                statusContainer.classList.remove('hidden', 'bg-red-500/20', 'bg-green-500/20', 'bg-blue-500/20');
+                statusMessage.classList.remove('text-red-300', 'text-green-300', 'text-blue-300');
+                
+                if (type === 'error') {
+                    statusContainer.classList.add('bg-red-500/20');
+                    statusMessage.classList.add('text-red-300');
+                } else if (type === 'success') {
+                    statusContainer.classList.add('bg-green-500/20');
+                    statusMessage.classList.add('text-green-300');
+                } else { // info
+                    statusContainer.classList.add('bg-blue-500/20');
+                    statusMessage.classList.add('text-blue-300');
+                }
+                
+                statusMessage.textContent = message;
+            }
+        });
+    </script>
+</body>
+</html>
